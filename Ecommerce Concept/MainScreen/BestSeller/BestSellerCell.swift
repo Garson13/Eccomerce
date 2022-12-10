@@ -2,7 +2,7 @@
 //  BestSellerCell.swift
 //  Ecommerce Concept
 //
-//  Created by Гарик on 31.08.2022.
+//  Created by Гарик on 02.12.2022.
 //
 
 import UIKit
@@ -87,9 +87,9 @@ class BestSellerCell: UICollectionViewCell {
         addSubview(priceWithoutDiscont)
         addSubview(favoritesView)
         addSubview(favoritesItem)
-        translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = .white
         layer.cornerRadius = 10
+        clipsToBounds = true
         setupConstraints()
     }
     
@@ -98,7 +98,6 @@ class BestSellerCell: UICollectionViewCell {
     }
     
     private func setupConstraints() {
-        phoneImage.widthAnchor.constraint(equalToConstant: 187).isActive = true
         phoneImage.heightAnchor.constraint(equalToConstant: 168).isActive = true
         phoneImage.topAnchor.constraint(equalTo: topAnchor).isActive = true
         phoneImage.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
@@ -107,23 +106,17 @@ class BestSellerCell: UICollectionViewCell {
         
         favoritesView.widthAnchor.constraint(equalToConstant: 25).isActive = true
         favoritesView.heightAnchor.constraint(equalToConstant: 25).isActive = true
-        favoritesView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 147).isActive = true
         favoritesView.topAnchor.constraint(equalTo: topAnchor, constant: 8).isActive = true
         favoritesView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
         
-        favoritesItem.widthAnchor.constraint(equalToConstant: 11).isActive = true
-        favoritesItem.heightAnchor.constraint(equalToConstant: 10).isActive = true
         favoritesItem.centerXAnchor.constraint(equalTo: favoritesView.centerXAnchor).isActive = true
         favoritesItem.centerYAnchor.constraint(equalTo: favoritesView.centerYAnchor).isActive = true
         
-        
         discountPrice.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 21).isActive = true
         discountPrice.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -33).isActive = true
-        discountPrice.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -110).isActive = true
-        
         
         priceWithoutDiscont.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -39).isActive = true
-        priceWithoutDiscont.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -82).isActive = true
+        priceWithoutDiscont.leadingAnchor.constraint(equalTo: discountPrice.trailingAnchor, constant: 5).isActive = true
         
         phoneName.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 21).isActive = true
         phoneName.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -15).isActive = true

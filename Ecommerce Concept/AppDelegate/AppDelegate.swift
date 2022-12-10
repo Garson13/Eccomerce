@@ -2,7 +2,7 @@
 //  AppDelegate.swift
 //  Ecommerce Concept
 //
-//  Created by Гарик on 24.08.2022.
+//  Created by Гарик on 02.12.2022.
 //
 
 import UIKit

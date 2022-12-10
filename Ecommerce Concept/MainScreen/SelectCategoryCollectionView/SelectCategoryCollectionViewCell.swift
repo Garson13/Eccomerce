@@ -2,7 +2,7 @@
 //  SelectCategoryCollectionViewCell.swift
 //  Ecommerce Concept
 //
-//  Created by Гарик on 26.08.2022.
+//  Created by Гарик on 02.12.2022.
 //
 
 import UIKit
@@ -48,7 +48,6 @@ class SelectCategoryCollectionViewCell: UICollectionViewCell {
         addSubview(ellipse)
         addSubview(name)
         setupConstraints()
-        translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = UIColor(red: 0.898, green: 0.898, blue: 0.898, alpha: 1)
     }
     

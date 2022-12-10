@@ -2,25 +2,24 @@
 //  ViewController.swift
 //  Ecommerce Concept
 //
-//  Created by Гарик on 24.08.2022.
+//  Created by Гарик on 02.12.2022.
 //
 
 import UIKit
 
-class MainScreen: UIViewController{
+class MainScreen: UIViewController {
     
-    private let viewModelSelectCategory = ViewModelSelectCategory()
-    private let selectCategory = ViewModelSelectCategory().selectCategory
-    private let viewAll = ViewModelSelectCategory().viewAll
-    private let selectCategoryCollectionView = ViewModelSelectCategory().selectCategoryCollectionView
-    private let searchBar = SearchBarViews().searchBar
-    private let searchBarQR = SearchBarViews().searchBarQR
-    private let searchBarButton = SearchBarViews().searchBarButton
-    private let hotSales = HotSalesViewModel().hotSales
-    private let seeMore = HotSalesViewModel().seeMore
+    private let selectCategoryCollectionView = SelectCategoryCollectionView()
+    private let selectCategory = Views.selectCategory
+    private let viewAll = Views.viewAll
+    private let searchBar = Views.searchBar
+    private let searchBarQR = Views.searchBarQR
+    private let searchBarButton = Views.searchBarButton
+    private let hotSales = Views.hotSales
+    private let seeMore = Views.seeMore
     private let hotSalesCollectionView = HotSalesCollectionView()
-    private let bestSeller = BestSellerViewModel().bestSeller
-    private let seeMoreBestSeller = BestSellerViewModel().seeMoreBestSeller
+    private let bestSeller = Views.bestSeller
+    private let seeMoreBestSeller = Views.seeMoreBestSeller
     private let bestSellerCollectionView = BestSellerCollectionView()
     
     
@@ -48,41 +47,28 @@ class MainScreen: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
-        selectCategoryCollectionView.delegate = self
-        selectCategoryCollectionView.dataSource = self
-        selectCategoryCollectionView.register(SelectCategoryCollectionViewCell.self, forCellWithReuseIdentifier: "SelectCategoryCollectionViewCell")
         setupConstraints()
     }
     
     
     
     @objc func filterPressed() {
-        
-        let popOverController = FiltersOptionsView()
-        popOverController.modalPresentationStyle = .popover
-        popOverController.preferredContentSize = CGSize(width: view.bounds.width, height: view.bounds.height / 2 - 86)
-        popOverController.view.alpha = 0
-        
-        guard let presentationVC = popOverController.popoverPresentationController else {return}
-        
-        presentationVC.delegate = self
-        presentationVC.sourceView = view
-        presentationVC.permittedArrowDirections = []
-        presentationVC.sourceRect = CGRect(x: 0, y: view.frame.midY, width: view.frame.width + 100, height: 0)
-        
-        self.present(popOverController, animated: true, completion: nil)
-        
-        
+        let view = FiltersOptionsView()
+        view.modalPresentationStyle = .overFullScreen
+        present(view, animated: true)
     }
     
     private func setupViews() {
         view.addSubview(scroll)
         scroll.addSubview(contentView)
         navigationItem.rightBarButtonItem = filterItem
+        navigationItem.titleView = Views.navigationTitleView
+        navigationController?.navigationBar.barTintColor = UIColor(red: 0.898, green: 0.898, blue: 0.898, alpha: 1)
         view.backgroundColor = UIColor(red: 0.898, green: 0.898, blue: 0.898, alpha: 1)
         let arrayViews = [selectCategory, viewAll, selectCategoryCollectionView, searchBar, searchBarQR, searchBarButton, hotSales, seeMore, hotSalesCollectionView, bestSeller, seeMoreBestSeller, bestSellerCollectionView]
         arrayViews.forEach(contentView.addSubview)
         searchBarButton.addSubview(searchBarQR)
+        bestSellerCollectionView.delegate = self
     }
     
     private func setupConstraints() {
@@ -143,7 +129,7 @@ class MainScreen: UIViewController{
         seeMoreBestSeller.topAnchor.constraint(equalTo: hotSalesCollectionView.bottomAnchor, constant: 20).isActive = true
         seeMoreBestSeller.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,constant: -17).isActive = true
         
-        bestSellerCollectionView.topAnchor.constraint(equalTo: bestSeller.bottomAnchor, constant: 8).isActive = true
+        bestSellerCollectionView.topAnchor.constraint(equalTo: bestSeller.bottomAnchor, constant: 15).isActive = true
         bestSellerCollectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
         bestSellerCollectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
         bestSellerCollectionView.heightAnchor.constraint(equalToConstant: 520 ).isActive = true
@@ -151,54 +137,65 @@ class MainScreen: UIViewController{
     }
 }
 
-extension MainScreen: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        viewModelSelectCategory.setCollectionViewCell(collectionView, cellForItemAt: indexPath)
-    }
-}
 
 extension MainScreen: UICollectionViewDelegate {
-    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        viewModelSelectCategory.didSelectCollectionViewCell(collectionView, didSelectItemAt: indexPath)
+        let vc = ProductDetails()
+        navigationController?.pushViewController(vc, animated: true)
     }
-    
-    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        viewModelSelectCategory.didDeselectcollectionViewCell(collectionView, didDeselectItemAt: indexPath)
-    }
-    
-}
-
-extension UIPresentationController {
-    
-    
-    
 }
 
 extension MainScreen: UICollectionViewDelegateFlowLayout {
-    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        CGSize(width: 71, height: 71 * 1.6)
+        return CGSize(width: self.view.bounds.size.width / 2 - 27, height: 227)
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return CGFloat(23)
+        return CGFloat(20)
     }
 }
 
-extension MainScreen: UIPopoverPresentationControllerDelegate {
-    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
-        .none
+extension UIViewController {
+    
+    func addBackButton(image: UIImage) {
+        let backButton = UIButton(frame: CGRect(x: 0, y: 0, width: 35, height: 35))
+        backButton.backgroundColor = #colorLiteral(red: 0.003921568627, green: 0, blue: 0.2078431373, alpha: 1)
+        backButton.layer.cornerRadius = 11
+        backButton.setImage(image, for: .normal)
+        backButton.addTarget(self, action: #selector(backButtonClick), for: .touchUpInside)
+        let backBarButton = UIBarButtonItem(customView: backButton)
+        self.navigationItem.leftBarButtonItem = backBarButton
     }
     
-    func presentationControllerShouldDismiss(_ presentationController: UIPresentationController) -> Bool {
-        false
+    func addCustomRightButton(image: UIImage) {
+        let rightButton = UIButton(frame: CGRect(x: 0, y: 0, width: 35, height: 35))
+        rightButton.backgroundColor = #colorLiteral(red: 1, green: 0.5189241767, blue: 0.3763272166, alpha: 1)
+        rightButton.layer.cornerRadius = 11
+        rightButton.setImage(image, for: .normal)
+        rightButton.addTarget(self, action: #selector(rightButtonClick), for: .touchUpInside)
+        let rightBarButton = UIBarButtonItem(customView: rightButton)
+        self.navigationItem.rightBarButtonItems = [rightBarButton]
     }
     
+    func addTitleRightButton() {
+        let label = UILabel()
+        label.text = "Add address"
+        label.font = UIFont(name: "MarkPro", size: 13)
+        label.textColor = .black
+        let rightBarButton2 = UIBarButtonItem(customView: label)
+        self.navigationItem.rightBarButtonItems?.append(rightBarButton2)
+    }
+    
+    @objc func backButtonClick(sender : UIButton) {
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    @objc func rightButtonClick(sender : UIButton) {
+        let vc = MyCart()
+        vc.addBackButton(image: UIImage(named: "BackImage")!)
+        navigationController?.pushViewController(vc, animated: true)
+    }
+
 }
 
 

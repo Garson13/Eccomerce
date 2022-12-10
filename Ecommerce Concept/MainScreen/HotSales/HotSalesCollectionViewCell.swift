@@ -2,7 +2,7 @@
 //  HotSalesCollectionViewCell.swift
 //  Ecommerce Concept
 //
-//  Created by Гарик on 29.08.2022.
+//  Created by Гарик on 02.12.2022.
 //
 
 import UIKit
@@ -76,7 +76,6 @@ class HotSalesCollectionViewCell: UICollectionViewCell {
         addSubview(descriptionPhone)
         addSubview(viewNew)
         addSubview(labelNew)
-        translatesAutoresizingMaskIntoConstraints = false
         layer.cornerRadius = 10
         backgroundColor = .black
         setupConstraints()
@@ -96,9 +95,7 @@ class HotSalesCollectionViewCell: UICollectionViewCell {
         labelNew.centerYAnchor.constraint(equalTo: viewNew.centerYAnchor).isActive = true
         
         phoneName.heightAnchor.constraint(equalToConstant: 30).isActive = true
-        phoneName.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 28).isActive = true
-        phoneName.topAnchor.constraint(equalTo: viewNew.bottomAnchor, constant: 18).isActive = true
-        
+        phoneName.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 28).isActive = true        
         
         descriptionPhone.widthAnchor.constraint(equalToConstant: 115).isActive = true
         descriptionPhone.heightAnchor.constraint(equalToConstant: 13).isActive = true

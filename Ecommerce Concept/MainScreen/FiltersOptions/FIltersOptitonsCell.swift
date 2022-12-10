@@ -2,24 +2,15 @@
 //  FIltersOptitonsCell.swift
 //  Ecommerce Concept
 //
-//  Created by Гарик on 02.09.2022.
-//
+//  Created by Гарик on 02.12.2022.
 
 import UIKit
 
 class FIltersOptitonsCell: UITableViewCell {
     
-    lazy var brandLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .black
-        label.font = UIFont(name: "MarkPro-Medium", size: 18)
-        label.textAlignment = .left
-        return label
-    }()
-    
     lazy var selectionFilters: UIButton = {
         let view = UIButton()
+        view.tintColor = #colorLiteral(red: 1, green: 0.431372549, blue: 0.3058823529, alpha: 1)
         view.configuration = .borderless()
         view.configuration?.background.strokeColor = UIColor(red: 0.863, green: 0.863, blue: 0.863, alpha: 1)
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -31,19 +22,7 @@ class FIltersOptitonsCell: UITableViewCell {
         view.addSubview(cursorView)
         return view
     }()
-    
-    lazy var stackView: UIStackView = {
-        let view = UIStackView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.axis = .vertical
-        view.alignment = .leading
-        view.spacing = 5
-        view.addArrangedSubview(brandLabel)
-        view.addArrangedSubview(selectionFilters)
-        view.backgroundColor = .white
-        return view
-    }()
-    
+
     lazy var cursorView: UIImageView  = {
         let view = UIImageView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -55,8 +34,7 @@ class FIltersOptitonsCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: "FIltersOptitonsCell")
-        translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(stackView)
+        contentView.addSubview(selectionFilters)
         setupConstraints()
     }
     
@@ -65,11 +43,10 @@ class FIltersOptitonsCell: UITableViewCell {
     }
     
     private func setupConstraints() {
-        stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10).isActive = true
-        stackView.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
-        stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10).isActive = true
-        
-        selectionFilters.widthAnchor.constraint(equalToConstant: 338).isActive = true
+        selectionFilters.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
+        selectionFilters.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
+        selectionFilters.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
+        selectionFilters.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
         
         cursorView.topAnchor.constraint(equalTo: selectionFilters.topAnchor, constant: 15).isActive = true
         cursorView.bottomAnchor.constraint(equalTo: selectionFilters.bottomAnchor, constant: -14).isActive = true
